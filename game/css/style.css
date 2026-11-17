@@ -1,0 +1,39 @@
+/* SPDX-License-Identifier: MIT */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; background: #0a0812; }
+body {
+  display: flex; align-items: center; justify-content: center;
+  font-family: "Trebuchet MS", Verdana, sans-serif; color: #d8cfae;
+  overflow: hidden;
+}
+#stage { position: relative; width: 960px; max-width: 100vw; }
+#game {
+  display: block; width: 100%; height: auto; background: #0a0812;
+  image-rendering: pixelated; outline: none; cursor: crosshair;
+  border: 2px solid #3a2f52; border-radius: 6px;
+}
+#hint {
+  text-align: center; font-size: 12px; color: #8f86ad; padding: 6px 4px 0;
+  letter-spacing: .4px;
+}
+#touch { display: none; }
+@media (pointer: coarse) {
+  #touch {
+    display: flex; justify-content: space-between;
+    position: absolute; left: 8px; right: 8px; bottom: 34px;
+    pointer-events: none;
+  }
+  .pad { display: grid; gap: 6px; pointer-events: auto; }
+  #pad-move { grid-template-columns: repeat(3, 52px); grid-template-rows: repeat(2, 52px); }
+  #pad-move button:nth-child(1) { grid-column: 2; grid-row: 1; }
+  #pad-move button:nth-child(2) { grid-column: 1; grid-row: 2; }
+  #pad-move button:nth-child(3) { grid-column: 2; grid-row: 2; }
+  #pad-move button:nth-child(4) { grid-column: 3; grid-row: 2; }
+  #pad-act { grid-template-columns: repeat(3, 58px); align-items: end; }
+  .pad button {
+    background: rgba(58, 47, 82, .75); color: #e8d98a; border: 2px solid #6b5a8f;
+    border-radius: 10px; font-size: 15px; font-weight: bold; touch-action: none;
+    user-select: none; -webkit-user-select: none;
+  }
+  .pad button:active { background: rgba(232, 217, 138, .8); color: #241a33; }
+}
