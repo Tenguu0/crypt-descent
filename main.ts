@@ -9,7 +9,7 @@
 //         node main.ts            (writes to /output)
 
 import { buildDossier } from './vendor/makefun-game.ts';
-import { cpSync, existsSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -34,8 +34,13 @@ if (!existsSync(gameDir)) fail('game/ is missing in ' + repoRoot);
 if (!existsSync(shotsDir)) fail('screenshots/ is missing in ' + repoRoot);
 
 // Start from a clean output directory so stale files never leak into the entry.
-rmSync(outDir, { recursive: true, force: true });
+// NOTE: never remove outDir itself — only clear its contents. On the grader
+// /output is a bind mount of an empty directory, and removing a mount point
+// throws EBUSY ("Device or resource busy"), which killed the entry.
 mkdirSync(outDir, { recursive: true });
+for (const entry of readdirSync(outDir)) {
+  rmSync(join(outDir, entry), { recursive: true, force: true });
+}
 
 cpSync(gameDir, join(outDir, 'game'), { recursive: true });
 cpSync(shotsDir, join(outDir, 'screenshots'), { recursive: true });
